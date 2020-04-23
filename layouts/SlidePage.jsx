@@ -199,7 +199,6 @@ export default function SlidePage({children}) {
   const navigate = ({ keyCode }) => {
 
       if (keyCode === PREV && currentSlide === 0) {
-        console.log('cancelling', currentSlide)
           if (router.query && router.query.slide) {
               if (router.query.slide > 1) {
                 router.push(`/slides/${parseInt(router.query.slide) - 1}`)
@@ -207,7 +206,6 @@ export default function SlidePage({children}) {
           }
         return false
       } if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
-          console.log('cancelling', currentSlide, router.query)
           if(router.query && router.query.slide) {
               // Check for max page count
               if(router.query.slide < totalPages) {
@@ -216,13 +214,11 @@ export default function SlidePage({children}) {
           }
           return false
         } if (NEXT.indexOf(keyCode) !== -1) {
-          console.log('moving right')
           setSlide((prevState) => {
             window.location.hash = `#${prevState + 1}`
             return prevState + 1
           })
       } else if (keyCode === PREV) {
-          console.log('moving left')
           setSlide((prevState) => {
             window.location.hash = `#${prevState - 1}`
             return prevState - 1
