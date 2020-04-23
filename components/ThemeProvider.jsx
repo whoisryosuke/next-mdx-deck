@@ -7,12 +7,8 @@ const theme = {
   },
 }
 
-export const ThemeProvider = ({children}) => {
-    return (
-      <StyledThemeProvider theme={theme}>
-        {children}
-      </StyledThemeProvider>
-    )
+export const ThemeProvider = ({ children }) => {
+  return <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
 }
 
 export default ThemeProvider

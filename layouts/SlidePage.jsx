@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
-import {Swipeable} from "react-swipeable"
+import React, { useState } from 'react'
+import { Swipeable } from 'react-swipeable'
 import { useRouter } from 'next/router'
-import {createGlobalStyle} from "styled-components"
-import Slide from "../components/Slide"
+import { createGlobalStyle } from 'styled-components'
+import Slide from '../components/Slide'
 import useEventListener from '../hooks/useEventListener'
 import { useTotalPages } from '../context/TotalPagesContext'
 
@@ -185,9 +185,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-export default function SlidePage({children}) {
-    const initialSlide = window.location.hash ? parseInt(window.location.hash.replace("#", "")) : 0
-    const [currentSlide, setSlide] = useState(initialSlide)
+export default function SlidePage({ children }) {
+  const initialSlide = window.location.hash
+    ? parseInt(window.location.hash.replace('#', ''))
+    : 0
+  const [currentSlide, setSlide] = useState(initialSlide)
   const router = useRouter()
   const totalPages = useTotalPages()
 
@@ -196,33 +198,34 @@ export default function SlidePage({children}) {
   let slideCount = 0
 
   const navigate = ({ keyCode }) => {
-
-      if (keyCode === PREV && currentSlide === 0) {
-          if (router.query && router.query.slide) {
-              if (router.query.slide > 1) {
-                router.push(`/slides/${parseInt(router.query.slide) - 1}`)
-              }
-          }
-        return false
-      } if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
-          if(router.query && router.query.slide) {
-              // Check for max page count
-              if(router.query.slide < totalPages) {
-                router.push(`/slides/${parseInt(router.query.slide) + 1}`)
-              }
-          }
-          return false
-        } if (NEXT.indexOf(keyCode) !== -1) {
-          setSlide((prevState) => {
-            window.location.hash = `#${prevState + 1}`
-            return prevState + 1
-          })
-      } else if (keyCode === PREV) {
-          setSlide((prevState) => {
-            window.location.hash = `#${prevState - 1}`
-            return prevState - 1
-          })
+    if (keyCode === PREV && currentSlide === 0) {
+      if (router.query && router.query.slide) {
+        if (router.query.slide > 1) {
+          router.push(`/slides/${parseInt(router.query.slide) - 1}`)
+        }
       }
+      return false
+    }
+    if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
+      if (router.query && router.query.slide) {
+        // Check for max page count
+        if (router.query.slide < totalPages) {
+          router.push(`/slides/${parseInt(router.query.slide) + 1}`)
+        }
+      }
+      return false
+    }
+    if (NEXT.indexOf(keyCode) !== -1) {
+      setSlide((prevState) => {
+        window.location.hash = `#${prevState + 1}`
+        return prevState + 1
+      })
+    } else if (keyCode === PREV) {
+      setSlide((prevState) => {
+        window.location.hash = `#${prevState - 1}`
+        return prevState - 1
+      })
+    }
   }
 
   useEventListener('keydown', navigate)
@@ -236,25 +239,24 @@ export default function SlidePage({children}) {
   }
 
   const renderSlide = () => {
-
     let generatedSlides = []
     let generatorCount = 0
 
     // Filter down children by only Slides
     React.Children.map(children, (child) => {
-        // Check for <hr> element to separate slides
-        const childType = child && child.props && (child.props.mdxType || [])
-        if (childType && childType.includes('hr')) {
-            generatorCount += 1
-            return
-        }
+      // Check for <hr> element to separate slides
+      const childType = child && child.props && (child.props.mdxType || [])
+      if (childType && childType.includes('hr')) {
+        generatorCount += 1
+        return
+      }
 
-        // Add slide content to current generated slide
-        if (!Array.isArray(generatedSlides[generatorCount])) {
-            generatedSlides[generatorCount] = []
-        }
-        generatedSlides[generatorCount].push(child)
-    });
+      // Add slide content to current generated slide
+      if (!Array.isArray(generatedSlides[generatorCount])) {
+        generatedSlides[generatorCount] = []
+      }
+      generatedSlides[generatorCount].push(child)
+    })
     // Then find slide number that matches state
     const findCurrentSlide = generatedSlides.filter((child, index) => {
       return index === currentSlide
@@ -269,13 +271,12 @@ export default function SlidePage({children}) {
     return <Slide>{generatedSlides[currentSlide]}</Slide>
   }
 
-
-    return (
-      <Swipeable onSwipedLeft={swipeLeft} onSwipedRight={swipeRight}>
-        <GlobalStyle />
-        <div id="slide" style={{ width: '100%' }}>
-          {renderSlide()}
-        </div>
-      </Swipeable>
-    )
+  return (
+    <Swipeable onSwipedLeft={swipeLeft} onSwipedRight={swipeRight}>
+      <GlobalStyle />
+      <div id="slide" style={{ width: '100%' }}>
+        {renderSlide()}
+      </div>
+    </Swipeable>
+  )
 }
