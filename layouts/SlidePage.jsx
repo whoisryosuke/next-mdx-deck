@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import {createGlobalStyle} from "styled-components"
 import Slide from "../components/Slide"
 import useEventListener from '../hooks/useEventListener'
+import { useTotalPages } from '../context/TotalPagesContext'
+
 const GlobalStyle = createGlobalStyle`
   :root {
     --bg: #050505;
@@ -187,6 +189,7 @@ export default function SlidePage({children}) {
     const initialSlide = window.location.hash ? parseInt(window.location.hash.replace("#", "")) : 0
     const [currentSlide, setSlide] = useState(initialSlide)
   const router = useRouter()
+  const totalPages = useTotalPages()
 
   const NEXT = [13, 32, 39]
   const PREV = 37
@@ -197,7 +200,6 @@ export default function SlidePage({children}) {
 
       if (keyCode === PREV && currentSlide === 0) {
         console.log('cancelling', currentSlide)
-        // router.push(`/slides/${currentSlide - 1}`)
           if (router.query && router.query.slide) {
               if (router.query.slide > 1) {
                 router.push(`/slides/${parseInt(router.query.slide) - 1}`)
@@ -207,8 +209,10 @@ export default function SlidePage({children}) {
       } if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
           console.log('cancelling', currentSlide, router.query)
           if(router.query && router.query.slide) {
-              // @TODO: Check for max page count
-            router.push(`/slides/${parseInt(router.query.slide) + 1}`)
+              // Check for max page count
+              if(router.query.slide < totalPages) {
+                router.push(`/slides/${parseInt(router.query.slide) + 1}`)
+              }
           }
           return false
         } if (NEXT.indexOf(keyCode) !== -1) {
