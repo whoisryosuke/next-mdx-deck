@@ -62,10 +62,33 @@ const GlobalStyle = createGlobalStyle`
     -webkit-overflow-scrolling: touch;
   }
 
-  #slide ul {
+  #slide ul,
+  #slide ol {
       text-align: left;
       margin-left: 32px;
   }
+
+  #slide ol {
+    list-style: none;
+    counter-reset: slide-ol-counter;
+  }
+
+  #slide ol li {
+    counter-increment: slide-ol-counter;
+    margin-bottom:0.5em;
+  }
+
+  #slide ol li::before {
+    content: "0" counter(slide-ol-counter) ".";
+    font-weight: bold;
+    font-size: 2rem;
+    margin-right: 0.5rem;
+    letter-spacing:1px;
+    font-family: var(--heading-font-family);
+    line-height: 1;
+    position:relative;
+    top:0.1em;
+}
 
   a {
     color: var(--text);
