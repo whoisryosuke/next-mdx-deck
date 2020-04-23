@@ -9,7 +9,7 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
   const MDXContent = dynamic(() => import(`../../${filename}`))
   return (
     <TotalPagesContext.Provider value={totalSlidePages}>
-      <Header name={siteConfig.name} title={siteConfig.title} date={siteConfig.date} />
+      <Header name={siteConfig.name} title={siteConfig.title} date={siteConfig.date} url={siteConfig.author.url} />
       <MDXContent />
     </TotalPagesContext.Provider>
   )
