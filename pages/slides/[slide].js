@@ -4,8 +4,6 @@ import dynamic from 'next/dynamic'
 import { TotalPagesContext } from '../../context/TotalPagesContext'
 
 const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
-  console.log('the filename', filename)
-  console.log('the current slide', currentSlide)
   const MDXContent = dynamic(() => import(`../../${filename}`))
   return (
     <TotalPagesContext.Provider value={totalSlidePages}>
@@ -19,7 +17,6 @@ export async function getStaticProps({ params }) {
   const slidesDirectory = path.join(process.cwd(), 'slides')
   const mdxFiles = fs.readdirSync(slidesDirectory)
   const totalSlidePages = mdxFiles.length
-  console.log('total slide pages', totalSlidePages)
 
   return {
     props: {
@@ -33,7 +30,6 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
   const postsDirectory = path.join(process.cwd(), 'slides')
   const mdxFiles = fs.readdirSync(postsDirectory)
-  console.log('the queried pages', mdxFiles)
   // Loop through all post files and create array of slugs (to create links)
   const paths = mdxFiles.map((filename) => ({
     params: {

@@ -194,7 +194,6 @@ export default function SlidePage({children}) {
   const NEXT = [13, 32, 39]
   const PREV = 37
   let slideCount = 0
-  console.log('query params', router.asPath, )
 
   const navigate = ({ keyCode }) => {
 

@@ -9,7 +9,6 @@ const mdComponents = {
   h1: (props) => <h1 {...props} />,
   pre: (props) => props.children,
   code: (props) => {
-    console.log('syntax props', props)
     const {className} = props
     const language = className.replace("language-", "");
     return (
