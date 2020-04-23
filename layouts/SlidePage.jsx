@@ -81,7 +81,7 @@ export default function SlidePage({children}) {
     slideCount = generatorCount
 
     // Return current slide
-    return generatedSlides[currentSlide]
+    return <Slide>{generatedSlides[currentSlide]}</Slide>
   }
 
 
