@@ -16,6 +16,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-swipeable": "^5.5.1",
+    "react-syntax-highlighter": "^12.2.1",
     "styled-components": "^5.1.0"
   },
   "devDependencies": {
