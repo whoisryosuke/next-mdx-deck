@@ -1,6 +1,7 @@
 {
-  "name": "next-mdx-boilerplate",
+  "name": "next-mdx-deck",
   "version": "0.1.0",
+  "description": "Presentation decks using MDX, React, and Next.JS",
   "private": true,
   "scripts": {
     "dev": "next dev",
