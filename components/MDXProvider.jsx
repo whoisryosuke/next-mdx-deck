@@ -4,7 +4,7 @@ import SlidePage from '../layouts/SlidePage'
 import Cover from './Cover'
 
 const mdComponents = {
-  h1: (props) => <h1 style={{ color: 'green' }} {...props} />,
+  h1: (props) => <h1 {...props} />,
   Cover,
   SlidePage,
 }
