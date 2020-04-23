@@ -1,12 +1,15 @@
 import fs from 'fs'
 import path from 'path'
 import dynamic from 'next/dynamic'
+import Header from '../../components/Header'
 import { TotalPagesContext } from '../../context/TotalPagesContext'
+import { siteConfig } from "../../site.config.js"
 
 const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
   const MDXContent = dynamic(() => import(`../../${filename}`))
   return (
     <TotalPagesContext.Provider value={totalSlidePages}>
+      <Header name={siteConfig.name} title={siteConfig.title} date={siteConfig.date} />
       <MDXContent />
     </TotalPagesContext.Provider>
   )
