@@ -5,12 +5,14 @@ import Slide from "../components/Slide"
 import useEventListener from '../hooks/useEventListener'
 
 export default function SlidePage({children}) {
-    const [currentSlide, setSlide] = useState(0)
+    const initialSlide = window.location.hash ? parseInt(window.location.hash.replace("#", "")) : 0
+    const [currentSlide, setSlide] = useState(initialSlide)
   const router = useRouter()
 
   const NEXT = [13, 32, 39]
   const PREV = 37
   let slideCount = 0
+  console.log('query params', router.asPath, )
 
   const navigate = ({ keyCode }) => {
 
@@ -32,10 +34,16 @@ export default function SlidePage({children}) {
           return false
         } if (NEXT.indexOf(keyCode) !== -1) {
           console.log('moving right')
-          setSlide((prevState) => prevState + 1)
+          setSlide((prevState) => {
+            window.location.hash = `#${prevState + 1}`
+            return prevState + 1
+          })
       } else if (keyCode === PREV) {
           console.log('moving left')
-          setSlide((prevState) => prevState - 1)
+          setSlide((prevState) => {
+            window.location.hash = `#${prevState - 1}`
+            return prevState - 1
+          })
       }
   }
 
@@ -56,7 +64,6 @@ export default function SlidePage({children}) {
 
     // Filter down children by only Slides
     React.Children.map(children, (child) => {
-        console.log(children)
         // Check for <hr> element to separate slides
         const childType = child && child.props && (child.props.mdxType || [])
         if (childType && childType.includes('hr')) {
