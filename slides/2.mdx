@@ -1,29 +1,58 @@
 <SlidePage>
 
-# NextJS Deck
+# Elevate authoring with components
 
-Create presentations using Next & React.
-
----
-
-> Inscrutable icons litter the face of the devices even though the research
-> community has long demonstrated that people cannot remember the meaning of
-> more than a small number of icons […] Who can remember what each icon
-> means? Not me.
-> <cite>Don Norman</cite>
+Using MDX you can use components alongside your Markdown, like React or Web Components.
 
 ---
 
-# 🤫
+<button 
+    style={{
+        backgroundColor:"transparent", 
+        color: "#FFF", 
+        border: "3px solid #FFF", 
+        borderRadius: "6px", 
+        padding: "1.5em 2em",
+        fontSize: "1em"
+    }}
+>Button with JSX</button>
 
 ---
 
-## Slides are written in Markdown!
+## Source of the last slide
 
-Here's the source of the first slide:
-
-```js
-const variable = someFunction();
+```jsx
+<button 
+    style={{
+        backgroundColor:"transparent", 
+        color: "#FFF", 
+        border: "3px solid #FFF", 
+        borderRadius: "6px", 
+        padding: "1.5em 2em",
+        fontSize: "1em"
+    }}
+>Button with JSX</button>
 ```
+
+---
+
+Use other components by adding to `<MDXProvider>`
+
+```jsx
+const mdComponents = {
+  h1: (props) => <Heading as="h1" {...props} />,
+}
+```
+
+[Check out the docs here](https://mdxjs.com/getting-started#mdxprovider)
+
+---
+
+## Having issues?
+
+- **Check your syntax.** *JSX doesn't like things like unclosed tags.* 
+- **Clear the cache and restart the server.** *MDX is like that sometimes.*
+- **Check the MDX docs**. *It's next level stuff.*
+
 
 </SlidePage>
