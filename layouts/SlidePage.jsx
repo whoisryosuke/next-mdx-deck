@@ -10,25 +10,32 @@ export default function SlidePage({children}) {
 
   const NEXT = [13, 32, 39]
   const PREV = 37
+  let slideCount = 0
 
   const navigate = ({ keyCode }) => {
-      console.log('moving', keyCode)
-    const slidesLength = 10
 
-      if (keyCode === PREV && currentSlide === 1) {
+      if (keyCode === PREV && currentSlide === 0) {
         console.log('cancelling', currentSlide)
+        // router.push(`/slides/${currentSlide - 1}`)
+          if (router.query && router.query.slide) {
+              if (router.query.slide > 1) {
+                router.push(`/slides/${parseInt(router.query.slide) - 1}`)
+              }
+          }
         return false
-      } if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slidesLength) {
-        console.log('cancelling', currentSlide)
-        return false
-      } if (NEXT.indexOf(keyCode) !== -1) {
+      } if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
+          console.log('cancelling', currentSlide, router.query)
+          if(router.query && router.query.slide) {
+              // @TODO: Check for max page count
+            router.push(`/slides/${parseInt(router.query.slide) + 1}`)
+          }
+          return false
+        } if (NEXT.indexOf(keyCode) !== -1) {
           console.log('moving right')
           setSlide((prevState) => prevState + 1)
-        // router.push(`/slides/${currentSlide + 1}`)
       } else if (keyCode === PREV) {
           console.log('moving left')
           setSlide((prevState) => prevState - 1)
-        // router.push(`/slides/${currentSlide - 1}`)
       }
   }
 
@@ -44,25 +51,37 @@ export default function SlidePage({children}) {
 
   const renderSlide = () => {
 
-    const slideType = [Slide.displayName] || [Slide.name];
+    let generatedSlides = []
+    let generatorCount = 0
+
     // Filter down children by only Slides
-    const childSlides = React.Children.map(children, (child) => {
-      const childType =
-        child && child.props && (child.props.mdxType || child.type.name)
-        console.log('checking slide name', childType)
-      if(childType.includes(slideType)) {
-          return child
-      }
+    React.Children.map(children, (child) => {
+        console.log(children)
+        // Check for <hr> element to separate slides
+        const childType = child && child.props && (child.props.mdxType || [])
+        if (childType && childType.includes('hr')) {
+            generatorCount += 1
+            return
+        }
+
+        // Add slide content to current generated slide
+        if (!Array.isArray(generatedSlides[generatorCount])) {
+            generatedSlides[generatorCount] = []
+        }
+        generatedSlides[generatorCount].push(child)
     });
     // Then find slide number that matches state
-    const findCurrentSlide = childSlides.filter((child, index) => {
+    const findCurrentSlide = generatedSlides.filter((child, index) => {
       return index === currentSlide
     })
     if (!findCurrentSlide) {
       return null
     }
-    console.log('rendering slide', findCurrentSlide)
-    return findCurrentSlide
+    // Get total slide count
+    slideCount = generatorCount
+
+    // Return current slide
+    return generatedSlides[currentSlide]
   }
 
 
