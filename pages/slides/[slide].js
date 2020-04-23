@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import Header from '../../components/Header'
 import { TotalPagesContext } from '../../context/TotalPagesContext'
@@ -9,7 +10,16 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
   const MDXContent = dynamic(() => import(`../../${filename}`))
   return (
     <TotalPagesContext.Provider value={totalSlidePages}>
-      <Header name={siteConfig.name} title={siteConfig.title} date={siteConfig.date} url={siteConfig.author.url} />
+      <Head>
+        <title>{siteConfig.name} - {siteConfig.title}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Header
+        name={siteConfig.name}
+        title={siteConfig.title}
+        date={siteConfig.date}
+        url={siteConfig.author.url}
+      />
       <MDXContent />
     </TotalPagesContext.Provider>
   )
