@@ -201,7 +201,7 @@ export default function SlidePage({ children }) {
     if (keyCode === PREV && currentSlide === 0) {
       if (router.query && router.query.slide) {
         if (router.query.slide > 1) {
-          router.push(`/slides/${parseInt(router.query.slide) - 1}`)
+          router.push(`/slides/${parseInt(router.query.slide) - 1}#999`)
         }
       }
       return false
@@ -257,17 +257,15 @@ export default function SlidePage({ children }) {
       }
       generatedSlides[generatorCount].push(child)
     })
-    // Then find slide number that matches state
-    const findCurrentSlide = generatedSlides.filter((child, index) => {
-      return index === currentSlide
-    })
-    if (!findCurrentSlide) {
-      return null
-    }
+
     // Get total slide count
     slideCount = generatorCount
 
     // Return current slide
+    if (currentSlide === 999) {
+      window.location.hash = `#${slideCount}`
+      setSlide(slideCount)
+    }
     return <Slide>{generatedSlides[currentSlide]}</Slide>
   }
 
