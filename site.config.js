@@ -6,3 +6,5 @@ export const siteConfig = {
         url: `https://twitter.com/whoisryosuke`
     }
 }
+
+export default siteConfig
