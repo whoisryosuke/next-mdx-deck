@@ -13,6 +13,7 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
       <Head>
         <title>{siteConfig.name} - {siteConfig.title}</title>
         <link rel="icon" href="/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@800&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
       </Head>
       <Header
         name={siteConfig.name}
