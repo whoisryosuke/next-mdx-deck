@@ -20,6 +20,10 @@ This project is easy to build locally or using a host with build services (like 
 
 ## How to Use
 
+### 💬 Changing the Title/Date/etc
+
+The default theme includes a title, date, author (and link to the author's website) in of the `<Header>` component. You can edit this data inside the `site.config.js` file. 
+
 ### ✍️ Writing JSX
 
 You can use JSX in [a few ways](https://mdxjs.com/getting-started) in your MDX files:
