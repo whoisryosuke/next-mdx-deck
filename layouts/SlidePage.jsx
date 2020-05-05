@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Swipeable } from 'react-swipeable'
 import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 import Slide from '../components/Slide'
 import useEventListener from '../hooks/useEventListener'
 import { useTotalPages } from '../context/TotalPagesContext'
+import { useCurrentSlide } from '../context/CurrentSlideContext'
+import { Storage } from '../hooks/useStorage'
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -209,10 +211,7 @@ const GlobalStyle = createGlobalStyle`
 `
 
 export default function SlidePage({ children }) {
-  const initialSlide = window.location.hash
-    ? parseInt(window.location.hash.replace('#', ''))
-    : 0
-  const [currentSlide, setSlide] = useState(initialSlide)
+  const {currentSlide, setSlide} = useCurrentSlide()
   const router = useRouter()
   const totalPages = useTotalPages()
 
@@ -224,7 +223,7 @@ export default function SlidePage({ children }) {
     if (keyCode === PREV && currentSlide === 0) {
       if (router.query && router.query.slide) {
         if (router.query.slide > 1) {
-          router.push(`/slides/${parseInt(router.query.slide) - 1}#999`)
+          router.push(`/slides/${parseInt(router.query.slide, 10) - 1}#999`)
         }
       }
       return false
@@ -233,7 +232,7 @@ export default function SlidePage({ children }) {
       if (router.query && router.query.slide) {
         // Check for max page count
         if (router.query.slide < totalPages) {
-          router.push(`/slides/${parseInt(router.query.slide) + 1}`)
+          router.push(`/slides/${parseInt(router.query.slide, 10) + 1}`)
         }
       }
       return false
@@ -295,6 +294,7 @@ export default function SlidePage({ children }) {
   return (
     <Swipeable onSwipedLeft={swipeLeft} onSwipedRight={swipeRight}>
       <GlobalStyle />
+      <Storage />
       <div id="slide" style={{ width: '100%' }}>
         {renderSlide()}
       </div>
