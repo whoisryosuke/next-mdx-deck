@@ -11,4 +11,7 @@ module.exports = {
     // Turn off const conversion
     'prefer-const': 'off',
   },
+  env: {
+    "browser": true,
+  }
 }
