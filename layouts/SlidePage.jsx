@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Swipeable } from 'react-swipeable'
 import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
@@ -213,7 +213,7 @@ const GlobalStyle = createGlobalStyle`
 `
 
 export default function SlidePage({ children }) {
-  const {currentSlide, setSlide} = useCurrentSlide()
+  const { currentSlide, setSlide } = useCurrentSlide()
   const [mode, setMode] = useState(MODES.SLIDESHOW)
   const router = useRouter()
   const totalPages = useTotalPages()
@@ -224,11 +224,10 @@ export default function SlidePage({ children }) {
   let slideCount = 0
 
   const navigate = ({ keyCode, altKey }) => {
-
     // Handle Presenter Mode shortcut
-    if(altKey) {
-      if(keyCode === PRESENTER) {
-        if(mode === MODES.SPEAKER) {
+    if (altKey) {
+      if (keyCode === PRESENTER) {
+        if (mode === MODES.SPEAKER) {
           setMode(MODES.SLIDESHOW)
         } else {
           setMode(MODES.SPEAKER)
@@ -246,7 +245,7 @@ export default function SlidePage({ children }) {
       }
       return false
     }
-    
+
     // Handle next page
     if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
       if (router.query && router.query.slide) {
@@ -342,7 +341,11 @@ export default function SlidePage({ children }) {
     <Swipeable onSwipedLeft={swipeLeft} onSwipedRight={swipeRight}>
       <GlobalStyle />
       <Storage />
-      <PresentationMode mode={mode} notes={slideNotes()} currentSlide={currentSlide}>
+      <PresentationMode
+        mode={mode}
+        notes={slideNotes()}
+        currentSlide={currentSlide}
+      >
         <div id="slide" style={{ width: '100%' }}>
           {renderSlide()}
         </div>

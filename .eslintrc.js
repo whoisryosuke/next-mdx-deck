@@ -12,6 +12,6 @@ module.exports = {
     'prefer-const': 'off',
   },
   env: {
-    "browser": true,
-  }
+    browser: true,
+  },
 }
