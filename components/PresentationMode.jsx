@@ -43,7 +43,7 @@ const SpeakerNotesWindow = styled.div`
     }
 `
 
-export default function PresentationMode({ mode, notes, children}) {
+export default function PresentationMode({ mode, notes, currentSlide, children}) {
     if (mode === MODES.SPEAKER) {
         return(
           <PresentationFrame>
@@ -57,7 +57,7 @@ export default function PresentationMode({ mode, notes, children}) {
                 {/* <NextSlideFrame /> */}
                 <SpeakerNotesWindow>
                   <div>
-                    {notes}
+                    {notes[currentSlide]}
                   </div>
                 </SpeakerNotesWindow>
               </div>
