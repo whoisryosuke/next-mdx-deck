@@ -19,6 +19,8 @@ const SlideWindow = styled.div`
 
   #slide {
     border: 1px solid #fff;
+    align-items:flex-start;
+    height:auto;
   }
 `
 
