@@ -2,6 +2,16 @@
 
 Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).
 
+## Features
+
+- 📽 React-based Slideshow
+- ✍️ Write slides using MDX
+- 🎨 Themeable using CSS vars or CSS in JS
+- 👉 Swipe to change slides
+- ♻️ Sync slides between tabs
+- 👨‍💻 Presentation Mode
+- 📝 Speaker Notes
+
 ## Getting Started
 
 1. Clone the project: `git clone https://github.com/whoisryosuke/next-mdx-deck`
