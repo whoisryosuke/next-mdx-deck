@@ -1,3 +1,5 @@
+![Presentation Mode](./screenshots/next-mdx-deck-example.gif)
+
 # Next MDX Deck
 
 Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).
@@ -48,6 +50,8 @@ You can use JSX in [a few ways](https://mdxjs.com/getting-started) in your MDX f
 ### 📃 Creating Slide Pages
 
 Slide pages are incremental, starting at 1. If you need a new page, create a new MDX file that is named one number higher than the last page (e.g. `3.mdx` if there's 2 pages).
+
+> Pages must be integers and incremental, but you can change the starting slide by editing the redirect in `/pages/index.jsx` (e.g. `router.replace('/slides/420')`)
 
 ### 🎨 Theming the Slideshow
 
