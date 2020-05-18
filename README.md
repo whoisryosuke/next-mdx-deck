@@ -49,6 +49,47 @@ The actual CSS styles of the Slideshow are also stored in the SlidePage layout. 
 
 When the Markdown is parsed into HTML, you can replace HTML with React components. These "swaps" are handled by the `<MDXProvider>` component. You can import custom components and swap elements (like a `<button>` with `<Button>`), or import components to use inside MDX (great for creating things like 2-col layouts with component). There you can change the syntax highlighting or find any custom MDX components. It's recommended to use Styled Components there to create custom components.
 
+## Presentation Mode
+
+![Presentation Mode](./screenshots/next-mdx-deck-presentation.png)
+
+Presentation mode allows you to view the current slide alongside any **"speaker notes"** included inside the slide.
+
+- Press `ALT/OPT + P` to toggle presentation mode on and off.
+- You can also add the `mode` query parameter to the URL (e.g. `http://localhost:3000/slides/1?mode=presentation`).
+
+The most common way to use presentation mode:
+
+1. Open two browser tabs with any slide page.
+2. Activate presentation mode in one tab.
+3. Navigate through slides - they'll be synced in both tabs!
+
+This way you can view your presentation on one monitor, while displaying the slides on another screen. Or if you're livestreaming, you can capture the slideshow window in software like OBS, and view the presentation window privately.
+
+> Note that syncing between tabs is achieved using `localStorage`. If you want to use an "Incognito" browser, make sure both tabs are "incognito" or they won't sync.
+
+### Speaker Notes
+
+Speaker notes are only displayed during presentation mode. This allows you to write private notes to yourself that you can see in "presentation" mode, while the audience only sees the other slide content in "slideshow" mode.
+
+Speaker notes can contain **Markdown**, **MDX/JSX**, and even **HTML** *(as JSX)*. The notes are displayed in a scrollable window to the side of slide content during "presenation" mode.
+
+To create speaker notes, you use the `<SpeakerNotes>` component inside of your MDX files. No need to import it, it's [automatically imported into any MDX slide page](components/MDXProvider.jsx). You can also use it multiple times within the same slide, all the notes (per slide) will be combined. 
+
+Here's an example:
+
+```mdx
+Slide content would go here.
+
+<SpeakerNotes>
+    
+Private notes here. 
+
+# Even Markdown!
+
+</SpeakerNotes>
+```
+
 ## Learn More
 
 ### MDX
