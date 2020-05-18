@@ -104,6 +104,21 @@ Private notes here.
 </SpeakerNotes>
 ```
 
+### Adding/replacing components in MDX
+
+MDX allows you to use JSX inline or import components, but if you want to use a React component across all slides without importing it, you can use the `<MDXProvider>` component. This component wraps the app in a "context" that provides MDX with components to pass into the parser. 
+
+This also lets you replace Markdown parsed HTML elements with React components, like replacing `## Headings` with `<Heading as="h2">` instead of the default `<h2>`. This comes in handy if you have a React component library and you want to use it's primitives like `<Text>` for paragraphs.
+
+You can pass new components, or swap HTML elements inside the `mdComponents` object in the `/components/MDXProvider.jsx` file:
+
+```jsx
+const mdComponents = {
+  h1: (props) => <h1 {...props} />,
+  CustomButton,
+}
+```
+
 ## Learn More
 
 ### MDX
