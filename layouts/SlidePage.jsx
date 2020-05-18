@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Swipeable } from 'react-swipeable'
 import { useRouter } from 'next/router'
 import { createGlobalStyle } from 'styled-components'
 import Slide from '../components/Slide'
+import PresentationMode from '../components/PresentationMode'
 import useEventListener from '../hooks/useEventListener'
 import { useTotalPages } from '../context/TotalPagesContext'
+import { useMode } from '../context/ModeContext'
+import { useCurrentSlide } from '../context/CurrentSlideContext'
+import { Storage } from '../hooks/useStorage'
+import { MODES } from '../constants/modes'
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -209,43 +214,61 @@ const GlobalStyle = createGlobalStyle`
 `
 
 export default function SlidePage({ children }) {
-  const initialSlide = window.location.hash
-    ? parseInt(window.location.hash.replace('#', ''))
-    : 0
-  const [currentSlide, setSlide] = useState(initialSlide)
+  const { currentSlide, setSlide } = useCurrentSlide()
   const router = useRouter()
   const totalPages = useTotalPages()
+  const {mode, setMode} = useMode()
 
   const NEXT = [13, 32, 39]
   const PREV = 37
+  const PRESENTER = 80
   let slideCount = 0
 
-  const navigate = ({ keyCode }) => {
+  const navigate = ({ keyCode, altKey }) => {
+    // Handle Presentation Mode shortcut
+    if (altKey) {
+      if (keyCode === PRESENTER) {
+        if (mode === MODES.SPEAKER) {
+          setMode(MODES.SLIDESHOW)
+          router.push(router.pathname, `/slides/${router.query.slide}?mode=${MODES.SLIDESHOW}#${currentSlide}`, {shallow:true})
+        } else {
+          setMode(MODES.SPEAKER)
+          router.push(router.pathname, `/slides/${router.query.slide}?mode=${MODES.SPEAKER}#${currentSlide}`, {shallow:true})
+        }
+        return false
+      }
+    }
+
+    // Handle Previous page
     if (keyCode === PREV && currentSlide === 0) {
       if (router.query && router.query.slide) {
         if (router.query.slide > 1) {
-          router.push(`/slides/${parseInt(router.query.slide) - 1}#999`)
+          router.push(`/slides/${parseInt(router.query.slide, 10) - 1}?mode=${mode}#999`)
         }
       }
       return false
     }
+
+    // Handle next page
     if (NEXT.indexOf(keyCode) !== -1 && currentSlide === slideCount) {
       if (router.query && router.query.slide) {
         // Check for max page count
         if (router.query.slide < totalPages) {
-          router.push(`/slides/${parseInt(router.query.slide) + 1}`)
+          router.push(`/slides/${parseInt(router.query.slide, 10) + 1}?mode=${mode}`)
         }
       }
       return false
     }
+
+    // Handle slide changes
     if (NEXT.indexOf(keyCode) !== -1) {
       setSlide((prevState) => {
-        window.location.hash = `#${prevState + 1}`
+        router.push(`${router.pathname}`, `/slides/${router.query.slide}?mode=${mode}#${prevState + 1}`)
         return prevState + 1
       })
     } else if (keyCode === PREV) {
       setSlide((prevState) => {
-        window.location.hash = `#${prevState - 1}`
+        router.push(`${router.pathname}`, `/slides/${router.query.slide}?mode=${mode}#${prevState - 1}`)
         return prevState - 1
       })
     }
@@ -261,6 +284,28 @@ export default function SlidePage({ children }) {
     navigate({ keyCode: PREV })
   }
 
+  const slideNotes = () => {
+    let generatorCount = 0
+    let generatedNotes = []
+    // Filter down children by only Slides
+    React.Children.map(children, (child) => {
+      // Check for <hr> element to separate slides
+      const childType = child && child.props && (child.props.mdxType || [])
+      if (childType && childType.includes('hr')) {
+        generatorCount += 1
+        return
+      }
+      // Check if it's a SpeakerNotes component
+      if (childType && childType.includes('SpeakerNotes')) {
+        if (!Array.isArray(generatedNotes[generatorCount])) {
+          generatedNotes[generatorCount] = []
+        }
+        generatedNotes[generatorCount].push(child)
+      }
+    })
+    return generatedNotes
+  }
+
   const renderSlide = () => {
     let generatedSlides = []
     let generatorCount = 0
@@ -274,11 +319,14 @@ export default function SlidePage({ children }) {
         return
       }
 
-      // Add slide content to current generated slide
-      if (!Array.isArray(generatedSlides[generatorCount])) {
-        generatedSlides[generatorCount] = []
+      // Check if it's a SpeakerNotes component
+      if (childType && !childType.includes('SpeakerNotes')) {
+        // Add slide content to current generated slide
+        if (!Array.isArray(generatedSlides[generatorCount])) {
+          generatedSlides[generatorCount] = []
+        }
+        generatedSlides[generatorCount].push(child)
       }
-      generatedSlides[generatorCount].push(child)
     })
 
     // Get total slide count
@@ -286,7 +334,7 @@ export default function SlidePage({ children }) {
 
     // Return current slide
     if (currentSlide === 999) {
-      window.location.hash = `#${slideCount}`
+      router.push(router.pathname, `/slides/${router.query.slide}?mode=${mode}#${slideCount}`, { shallow: true })
       setSlide(slideCount)
     }
     return <Slide>{generatedSlides[currentSlide]}</Slide>
@@ -295,9 +343,16 @@ export default function SlidePage({ children }) {
   return (
     <Swipeable onSwipedLeft={swipeLeft} onSwipedRight={swipeRight}>
       <GlobalStyle />
-      <div id="slide" style={{ width: '100%' }}>
-        {renderSlide()}
-      </div>
+      <Storage />
+      <PresentationMode
+        mode={mode}
+        notes={slideNotes()}
+        currentSlide={currentSlide}
+      >
+        <div id="slide" style={{ width: '100%' }}>
+          {renderSlide()}
+        </div>
+      </PresentationMode>
     </Swipeable>
   )
 }

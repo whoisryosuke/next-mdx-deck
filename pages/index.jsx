@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 export default function index() {
@@ -6,8 +6,6 @@ export default function index() {
 
   useEffect(() => {
     router.replace('/slides/1')
-  });
-  return (
-    <div />
-  )
+  })
+  return <div />
 }

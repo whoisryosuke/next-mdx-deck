@@ -7,10 +7,8 @@ export default function Header({ name, title, date, url }) {
       <div>
         <a href={url}>
           <span>{name}</span>
-        </a>
-        {' '}
-        —
-        {' '}
+        </a>{' '}
+        —{' '}
         <Link href="/1">
           <a>{title}</a>
         </Link>
