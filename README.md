@@ -106,3 +106,9 @@ To learn more about **Next.js**, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+### References
+
+- [MDX Deck](https://github.com/jxnblk/mdx-deck/blob/master/packages/gatsby-theme/src/hooks/use-storage.js)
+- [Gatsby Starter Deck](https://www.gatsbyjs.org/starters/fabe/gatsby-starter-deck/)
+- [react-syntax-highlighter](https://github.com/conorhastings/react-syntax-highlighter)
