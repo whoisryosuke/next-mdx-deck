@@ -4,6 +4,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import okaidia from 'react-syntax-highlighter/dist/cjs/styles/prism/okaidia'
 import SlidePage from '../layouts/SlidePage'
 import Cover from './Cover'
+import Quote from './Quote'
 import SpeakerNotes from './SpeakerNotes'
 
 const mdComponents = {
@@ -24,6 +25,7 @@ const mdComponents = {
   Cover,
   SlidePage,
   SpeakerNotes,
+  Quote,
 }
 
 export default ({ children }) => (
