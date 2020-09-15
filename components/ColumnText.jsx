@@ -6,7 +6,7 @@ export default function ColumnText({ children, textAlign = 'left' }) {
     <Box display="flex" flexWrap="wrap" textAlign={textAlign}>
       {React.Children.map(children, (textElem, index) => {
         let extraProps
-        if (index === 0) {
+        if ((index - 1) % 2) {
           extraProps = {
             color: 'gray',
             fontSize: '80%',
