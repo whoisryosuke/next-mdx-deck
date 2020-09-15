@@ -1,16 +1,16 @@
 import React from 'react'
 import { MDXProvider } from '@mdx-js/react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import okaidia from 'react-syntax-highlighter/dist/cjs/styles/prism/okaidia'
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import a11yLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/a11y-light'
 import * as Rebass from 'rebass/styled-components'
 import SlidePage from '../layouts/SlidePage'
 import Cover from './Cover'
 import FullImage from './FullImage'
 import Quote from './Quote'
 import SpeakerNotes from './SpeakerNotes'
+import ColumnText from './ColumnText'
 
 const mdComponents = {
-  h1: (props) => <h1 {...props} />,
   pre: (props) => props.children,
   code: (props) => {
     const { className } = props
@@ -19,7 +19,7 @@ const mdComponents = {
       <SyntaxHighlighter
         className={className}
         language={language}
-        style={okaidia}
+        style={a11yLight}
         {...props}
       />
     )
@@ -30,6 +30,7 @@ const mdComponents = {
   SlidePage,
   SpeakerNotes,
   Quote,
+  ColumnText,
 }
 
 export default ({ children }) => (

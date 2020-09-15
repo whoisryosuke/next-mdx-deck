@@ -10,6 +10,16 @@ Create presentations using Next & React & MDX.
 
 ---
 
+<ColumnText>
+
+Surrealism is destructive, but it destroys only what it considers to be shackles limiting our vision.
+
+Surrealism is destructive, but it destroys only what it considers to be shackles limiting our vision.
+
+</ColumnText>
+
+---
+
 <Quote author="Salvador Dali" align="center">
   Surrealism is destructive, but it destroys only what it considers to be
   shackles limiting our vision.
@@ -72,12 +82,24 @@ You can write an extremely long note and it'll still display inside of the prese
 
 ---
 
+<Box display="flex" flexWrap="wrap">
+<Box width={[1,1,1/2]} textAlign="left">
+
 ## Slides are written in MDX!
 
 And code is highlighted using `react-syntax-highlighter`.
 
+</Box>
+<Box width={[1,1,1/2]}>
+
 ```js
 const variable = someFunction()
+function name() {
+  return true
+}
 ```
+
+</Box>
+</Box>
 
 </SlidePage>
