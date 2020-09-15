@@ -1,18 +1,13 @@
 import React from 'react'
 import Link from 'next/link'
 
-export default function Header({ name, title, date, url }) {
+export default function Header({ name, event, date, url }) {
   return (
     <header>
-      <div>
-        <a href={url}>
-          <span>{name}</span>
-        </a>{' '}
-        —{' '}
-        <Link href="/1">
-          <a>{title}</a>
-        </Link>
-      </div>
+      <a href={url}>
+        <span>{name}</span>
+      </a>{' '}
+      <a href={event.url}>{event.name}</a>
       <time>{date}</time>
     </header>
   )

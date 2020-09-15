@@ -13,14 +13,16 @@ import { MODES } from '../constants/modes'
 
 const GlobalStyle = createGlobalStyle`
   :root {
-    --bg: #050505;
+    --bg: #FEFEFE;
     --meta: #888;
     --accent: rgb(0, 92, 221);
-    --text: #FAFAFA;
+    --text: #1a1a1a;
     --base: 1.5rem;
     --code: 1rem;
-    --heading-font-family: "Poppins";
+    --heading-font-family: "Archivo";
     --heading-font-weight: 800;
+
+    --copyright-font-size: 14px;
   }
 
   @media (max-width: 600px) {
@@ -101,8 +103,10 @@ const GlobalStyle = createGlobalStyle`
     text-decoration-skip-ink: auto;
   }
 
-  blockquote {
-    font-size: 120%;
+  blockquote, blockquote p {
+    font-family: 'DM Serif Text';
+    font-size: 48px;
+    line-height: 124.4%;
     font-weight: bold;
 
     width: 50vw;
@@ -116,16 +120,16 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  blockquote div::before {
+  blockquote p::before {
     content: '\\201C';
   }
 
-  blockquote div::after {
+  blockquote p::after {
     content: '\\201D';
   }
 
   cite {
-    font-size: 80%;
+    font-size: 20px;
     font-weight: normal;
     font-style: normal;
 
@@ -162,7 +166,8 @@ const GlobalStyle = createGlobalStyle`
   h1 {
     font-family: var(--heading-font-family);
     font-weight: var(--heading-font-weight);
-    font-size: 200%;
+    font-size: 120px;
+    line-height: 157px;
 
     margin-bottom: 0.5rem;
   }
@@ -176,28 +181,40 @@ const GlobalStyle = createGlobalStyle`
   }
 
   p {
+    font-size: 24px;
+    line-height: 32px;
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
 
-  header {
-    font-size: 50%;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  header,footer {
+    font-size: var(--copyright-font-size);
+    line-height: 21px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 
     width: 100%;
     padding: 20px;
+    display: flex;
+    position: fixed;
+  }
+
+  header {
+    top: 0;
+    left: 0;
+
+    flex-direction:row;
 
     user-select: none;
   }
 
   header a,
+  header time {
+    margin-right:1em;
+  }
+
+  header a,
+  footer a,
   time {
     text-decoration: none;
 
@@ -211,13 +228,19 @@ const GlobalStyle = createGlobalStyle`
   header span {
     color: var(--text);
   }
+
+  footer {
+    bottom:0;
+    left:0;
+    justify-content: space-between;
+  }
 `
 
 export default function SlidePage({ children }) {
   const { currentSlide, setSlide } = useCurrentSlide()
   const router = useRouter()
   const totalPages = useTotalPages()
-  const {mode, setMode} = useMode()
+  const { mode, setMode } = useMode()
 
   const NEXT = [13, 32, 39]
   const PREV = 37
@@ -230,10 +253,18 @@ export default function SlidePage({ children }) {
       if (keyCode === PRESENTER) {
         if (mode === MODES.SPEAKER) {
           setMode(MODES.SLIDESHOW)
-          router.push(router.pathname, `/slides/${router.query.slide}?mode=${MODES.SLIDESHOW}#${currentSlide}`, {shallow:true})
+          router.push(
+            router.pathname,
+            `/slides/${router.query.slide}?mode=${MODES.SLIDESHOW}#${currentSlide}`,
+            { shallow: true }
+          )
         } else {
           setMode(MODES.SPEAKER)
-          router.push(router.pathname, `/slides/${router.query.slide}?mode=${MODES.SPEAKER}#${currentSlide}`, {shallow:true})
+          router.push(
+            router.pathname,
+            `/slides/${router.query.slide}?mode=${MODES.SPEAKER}#${currentSlide}`,
+            { shallow: true }
+          )
         }
         return false
       }
@@ -243,7 +274,9 @@ export default function SlidePage({ children }) {
     if (keyCode === PREV && currentSlide === 0) {
       if (router.query && router.query.slide) {
         if (router.query.slide > 1) {
-          router.push(`/slides/${parseInt(router.query.slide, 10) - 1}?mode=${mode}#999`)
+          router.push(
+            `/slides/${parseInt(router.query.slide, 10) - 1}?mode=${mode}#999`
+          )
         }
       }
       return false
@@ -254,7 +287,9 @@ export default function SlidePage({ children }) {
       if (router.query && router.query.slide) {
         // Check for max page count
         if (router.query.slide < totalPages) {
-          router.push(`/slides/${parseInt(router.query.slide, 10) + 1}?mode=${mode}`)
+          router.push(
+            `/slides/${parseInt(router.query.slide, 10) + 1}?mode=${mode}`
+          )
         }
       }
       return false
@@ -263,12 +298,18 @@ export default function SlidePage({ children }) {
     // Handle slide changes
     if (NEXT.indexOf(keyCode) !== -1) {
       setSlide((prevState) => {
-        router.push(`${router.pathname}`, `/slides/${router.query.slide}?mode=${mode}#${prevState + 1}`)
+        router.push(
+          `${router.pathname}`,
+          `/slides/${router.query.slide}?mode=${mode}#${prevState + 1}`
+        )
         return prevState + 1
       })
     } else if (keyCode === PREV) {
       setSlide((prevState) => {
-        router.push(`${router.pathname}`, `/slides/${router.query.slide}?mode=${mode}#${prevState - 1}`)
+        router.push(
+          `${router.pathname}`,
+          `/slides/${router.query.slide}?mode=${mode}#${prevState - 1}`
+        )
         return prevState - 1
       })
     }
@@ -334,7 +375,11 @@ export default function SlidePage({ children }) {
 
     // Return current slide
     if (currentSlide === 999) {
-      router.push(router.pathname, `/slides/${router.query.slide}?mode=${mode}#${slideCount}`, { shallow: true })
+      router.push(
+        router.pathname,
+        `/slides/${router.query.slide}?mode=${mode}#${slideCount}`,
+        { shallow: true }
+      )
       setSlide(slideCount)
     }
     return <Slide>{generatedSlides[currentSlide]}</Slide>

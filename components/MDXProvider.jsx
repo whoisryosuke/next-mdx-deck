@@ -2,8 +2,10 @@ import React from 'react'
 import { MDXProvider } from '@mdx-js/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import okaidia from 'react-syntax-highlighter/dist/cjs/styles/prism/okaidia'
+import * as Rebass from 'rebass/styled-components'
 import SlidePage from '../layouts/SlidePage'
 import Cover from './Cover'
+import FullImage from './FullImage'
 import Quote from './Quote'
 import SpeakerNotes from './SpeakerNotes'
 
@@ -22,7 +24,9 @@ const mdComponents = {
       />
     )
   },
+  ...Rebass,
   Cover,
+  FullImage,
   SlidePage,
   SpeakerNotes,
   Quote,
