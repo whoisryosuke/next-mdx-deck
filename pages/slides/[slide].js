@@ -13,7 +13,7 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
     <TotalPagesContext.Provider value={totalSlidePages}>
       <Head>
         <title>
-          {siteConfig.author.name} - {siteConfig.title}
+          {siteConfig.title} - {siteConfig.author.name}
         </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
