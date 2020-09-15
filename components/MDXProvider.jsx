@@ -5,6 +5,7 @@ import a11yLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/a11y-light'
 import * as Rebass from 'rebass/styled-components'
 import SlidePage from '../layouts/SlidePage'
 import Cover from './Cover'
+import Divider from './Divider'
 import FullColor from './FullColor'
 import FullImage from './FullImage'
 import Quote from './Quote'
@@ -27,6 +28,7 @@ const mdComponents = {
   },
   ...Rebass,
   Cover,
+  Divider,
   FullColor,
   FullImage,
   SlidePage,
