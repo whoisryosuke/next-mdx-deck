@@ -1,12 +1,192 @@
+import { GiConsoleController } from 'react-icons/gi'
+
 <SlidePage>
     
-<Cover>
+<Box textAlign="left">
 
-# NextJS MDX Deck
+# Using Gamepads <br /> in React <sup><GiConsoleController /></sup>
 
-Create presentations using Next & React & MDX.
+My journey creating interactive UI using game input
 
-</Cover>
+</Box>
+
+---
+
+<Box textAlign="left">
+
+# What's up 👋🏼
+
+My name is **Ryo**, and I'm a _**designer**_ and **developer**.
+
+I currently work in **Los Angeles** as a **freelance consultant**
+
+Check out my [blog](http://whoisryosuke.com) or [Github](http://github.com/whoisryosuke).
+
+</Box>
+
+---
+
+<Box sx={{position:"relative"}}>
+
+<Image
+  width="70%"
+  maxHeight="80vh"
+  src="https://thumbs.gfycat.com/OptimisticCrispBeaver-max-1mb.gif"
+  alt="A GIF of a player using the Assasins Creed Odyssey menu"
+/>
+
+<Box sx={{position:"absolute", top:"40%", right:"0"}}>
+
+# 🤔💭⚛️
+
+</Box>
+
+</Box>
+
+<SpeakerNotes>
+
+Talk about inspiration playing AC Odyssey
+
+</SpeakerNotes>
+
+---
+
+<Quote>
+  What if I could use game input <em>inside</em> React?
+</Quote>
+
+---
+
+<ColumnText>
+
+<Box>
+
+## Meet the Gamepad API
+
+The browser's built in way to handle gamepad input using JavaScript.
+
+```js
+window.addEventListener('gamepadconnected', (e) => {
+  console.log(
+    'Gamepad connected',
+    e.gamepad.index,
+    e.gamepad.id,
+    e.gamepad.buttons.length,
+    e.gamepad.axes.length
+  )
+})
+```
+
+</Box>
+
+<img
+  src="https://media1.giphy.com/media/r3liXXQxXOyJi/200w.webp?cid=ecf05e47dirvn4j6d7q6pl2uzo599hanoarlqmwbjaewtvyq&rid=200w.webp"
+  alt="GIF illustration of two hands playing a PS2 controller"
+  width="100%"
+/>
+
+</ColumnText>
+
+---
+
+# But what about React?
+
+- Adding/removing event listener on mount/dismount
+- Syncing input with component state
+- Component level, vs global
+
+---
+
+<Box textAlign="left">
+
+# Introducing <br /> react-gamepads
+
+A set of **hooks** and **utilities** for using the **Gamepad API** inside React.
+
+Use a hook, get access to gamepad input -- _it's that easy_.
+
+</Box>
+
+---
+
+<Box textAlign="left">
+
+# How does it work?
+
+1. Attaches (and removes) event listeners with `useEffect()`
+1. Stores game input as a "ref"
+1. Returns latest game input _every frame_ as a hook or context
+
+</Box>
+
+---
+
+<Box textAlign="left">
+
+# How do you use it?
+
+```js
+import React, { useState } from 'react'
+import { useGamepads } from 'react-gamepads'
+
+export default function App() {
+  const [gamepads, setGamepads] = useState({})
+  useGamepads((gamepads) => setGamepads(gamepads))
+
+  return <div>{gamepads[0].buttons[4].pressed}</div>
+}
+```
+
+</Box>
+
+---
+
+_It's that simple._
+
+---
+
+<Box textAlign="left">
+
+# Why game input?
+
+- Make your app accessible to non-keyboard users
+- Introduce classic game control paradigms to the web
+- Make games!
+
+</Box>
+
+---
+
+# Basic Examples
+
+<Box width="100%" display="flex" sx={{"& h2": {flex: 1}}}>
+
+## Menu interaction
+
+## Cursor navigation
+
+## "Horse" game
+
+</Box>
+
+---
+
+<img
+  src="/gamepad-input-example.gif"
+  alt="GIF of the GamepadController component in an app, showing game input by highlighting buttons on pad"
+/>
+
+---
+
+<Box maxHeight="90vh">
+  <video width="80%" height="auto" autoplay>
+    <source
+      src="https://thumbs.gfycat.com/GratefulFrequentGardensnake-mobile.mp4"
+      type="video/mp4"
+    />
+    Your browser does not support the video tag.
+  </video>
+</Box>
 
 ---
 

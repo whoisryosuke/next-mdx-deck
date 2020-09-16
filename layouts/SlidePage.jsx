@@ -95,7 +95,11 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1;
     position:relative;
     top:0.1em;
-}
+  }
+
+  #slide li {
+    margin-bottom: 0.5em;
+  }
 
   a {
     color: var(--text);
