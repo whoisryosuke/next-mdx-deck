@@ -1,4 +1,5 @@
 import { GiConsoleController } from 'react-icons/gi'
+import { DiReact } from 'react-icons/di'
 
 <SlidePage>
     
@@ -6,7 +7,7 @@ import { GiConsoleController } from 'react-icons/gi'
 
 # Using Gamepads <br /> in React <sup><GiConsoleController /></sup>
 
-My journey creating interactive UI using game input
+My journey creating <Highlight>interactive UI</Highlight> using **game input**
 
 </Box>
 
@@ -16,7 +17,7 @@ My journey creating interactive UI using game input
 
 # What's up 👋🏼
 
-My name is **Ryo**, and I'm a _**designer**_ and **developer**.
+My name is **Ryo**, and I'm a **designer** and **developer**.
 
 I currently work in **Los Angeles** as a **freelance consultant**
 
@@ -61,7 +62,7 @@ Talk about inspiration playing AC Odyssey
 
 <Box>
 
-## Meet the Gamepad API
+## Meet the [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
 
 The browser's built in way to handle gamepad input using JavaScript.
 
@@ -89,17 +90,71 @@ window.addEventListener('gamepadconnected', (e) => {
 
 ---
 
+# Syncing input
+
+<ColumnText>
+
+```js
+function scanGamepads() {
+  const detectedGamepads = navigator.getGamepads
+    ? navigator.getGamepads()
+    : navigator.webkitGetGamepads
+    ? navigator.webkitGetGamepads()
+    : []
+
+  for (var i = 0; i < detectedGamepads.length; i++) {
+    if (detectedGamepads[i]) {
+      console.log(detectedGamepads[i])
+    }
+  }
+}
+```
+
+```js
+function animate() {
+  scanGamepads()
+  requestAnimationFrame(animate)
+}
+
+requestAnimationFrame(animate)
+```
+
+</ColumnText>
+
+<SpeakerNotes>
+
+Emphasize the power here. You can
+
+</SpeakerNotes>
+
+---
+
+<FullColor bg="#61dbfb">
+
+<div style={{position:"relative", zIndex:"420"}}>
+
 # But what about React?
 
 - Adding/removing event listener on mount/dismount
 - Syncing input with component state
 - Component level, vs global
 
+</div>
+
+<div style={{ position: 'fixed', top: '-200px', right: '-400px', zIndex: '0' }}>
+  <DiReact
+    color="#FFF"
+    style={{ width: '1000', height: '1000', opacity: 0.2 }}
+  />
+</div>
+
+</FullColor>
+
 ---
 
 <Box textAlign="left">
 
-# Introducing <br /> react-gamepads
+# Introducing <br /> <Highlight>[react-gamepads](https://github.com/whoisryosuke/react-gamepads)</Highlight>
 
 A set of **hooks** and **utilities** for using the **Gamepad API** inside React.
 
@@ -113,11 +168,101 @@ Use a hook, get access to gamepad input -- _it's that easy_.
 
 # How does it work?
 
-1. Attaches (and removes) event listeners with `useEffect()`
-1. Stores game input as a "ref"
+1. Checks for gamepads using event listeners
+1. Stores game input as a React "ref"
 1. Returns latest game input _every frame_ as a hook or context
 
 </Box>
+
+---
+
+<Box textAlign="left">
+
+# Checking for gamepads
+
+Attaches (and removes) event listeners with `useEffect()`
+
+```js
+const connectGamepadHandler = (e) => {
+  addGamepad(e.gamepad)
+}
+
+useEffect(() => {
+  window.addEventListener('gamepadconnected', connectGamepadHandler)
+  return window.removeEventListener('gamepadconnected', connectGamepadHandler)
+})
+```
+
+</Box>
+
+---
+
+<Box textAlign="left">
+
+# Checking for input
+
+We use `requestAnimationFrame` to run **"scan"** for gamepads every **"frame"** before DOM renders.
+
+```js
+const animate = useCallback(() => {
+  if (!haveEvents) scanGamepads()
+  requestRef.current = requestAnimationFrame(animate)
+}, [requestRef, scanGamepads, haveEvents])
+
+useEffect(() => {
+  requestRef.current = requestAnimationFrame(animate)
+  return () => cancelAnimationFrame(requestRef.current)
+}, [animate])
+```
+
+</Box>
+
+---
+
+<ColumnText>
+
+<div>
+
+## The `scanGamepads` method
+
+- **Grabs** all gamepads using **[Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)**
+- **Loops** over detected gamepads
+- **Runs** function to add gamepad to state/ref
+
+</div>
+
+<Box fontSize="80%">
+
+```js
+const scanGamepads = useCallback(() => {
+  // Grab gamepads using browser API
+  const detectedGamepads = navigator.getGamepads
+    ? navigator.getGamepads()
+    : navigator.webkitGetGamepads
+    ? navigator.webkitGetGamepads()
+    : []
+
+  // Loop over all detected gamepads
+  for (var i = 0; i < detectedGamepads.length; i++) {
+    if (detectedGamepads[i]) {
+      // Add gamepad to state/ref
+      addGamepad(detectedGamepads[i])
+    }
+  }
+}, [addGamepad])
+```
+
+</Box>
+
+</ColumnText>
+
+<SpeakerNotes>
+
+Differs from previous "connected" function, which does the same thing, but only with a single gamepad.
+
+You might not need the connected one, but covers you if a controller is connected out of animation frame timing.
+
+</SpeakerNotes>
 
 ---
 
@@ -141,10 +286,78 @@ export default function App() {
 
 ---
 
-_It's that simple._
+<Text as="p" fontSize={6}>
+  <em>It's that simple.</em>
+</Text>
 
 ---
 
+<Box textAlign="left">
+
+## Directional Input
+
+For a standard PS4 controller:
+
+```js
+useGamepads((gamepads) => {
+  const defaultGamepad = gamepads[0];
+  if (defaultGamepad && "buttons" in defaultGamepad) {
+    // Up
+    defaultGamepad.buttons[12].pressed && setTop((prevTop) => prevTop - 1);
+    // Down
+    defaultGamepad.buttons[13].pressed && setTop((prevTop) => prevTop + 1);
+    // Left
+    defaultGamepad.buttons[14].pressed && setLeft((prevLeft) => prevLeft - 1);
+    // right
+    defaultGamepad.buttons[15].pressed && setLeft((prevLeft) => prevLeft + 1);
+  }
+}
+```
+
+</Box>
+
+---
+
+<Box textAlign="left">
+
+## Analog Input
+
+For a standard PS4 controller:
+
+```js
+useGamepads((gamepads) => {
+  const defaultGamepad = gamepads[0];
+  if (defaultGamepad && "axes" in defaultGamepad) {
+
+    // Up
+    -0.2 > defaultGamepad.axes[1] > 0.2 && setTop((prevTop) => prevTop - 1);
+    // Down
+    0.2 > defaultGamepad.axes[1] < 0.2 && setTop((prevTop) => prevTop + 1);
+    // Left
+    -0.2 > defaultGamepad.axes[0] > 0.2 && setLeft((prevTop) => prevTop - 1);
+    // Right
+    0.2 > defaultGamepad.axes[0] < 0.2 && setLeft((prevTop) => prevTop + 1);
+  }
+}
+```
+
+</Box>
+
+<SpeakerNotes>
+
+```js
+// Each analog stick is an "axe"
+// Axes are delivered in a array of 2 numbers per axe
+// The first is left and right
+// The second is top and bottom
+// If a number is -1 or 1, it's one side or the other
+```
+
+</SpeakerNotes>
+
+---
+
+<DarkMode>
 <Box textAlign="left">
 
 # Why game input?
@@ -154,6 +367,7 @@ _It's that simple._
 - Make games!
 
 </Box>
+</DarkMode>
 
 ---
 
@@ -161,20 +375,98 @@ _It's that simple._
 
 <Box width="100%" display="flex" sx={{"& h2": {flex: 1}}}>
 
-## Menu interaction
+## [Menu interaction](https://codesandbox.io/s/react-gamepad-menu-w-controller-ui-perf-testing-state-version-throttled-brlml?file=/src/components/GameScreen.jsx:0-4254)
 
-## Cursor navigation
+## [Cursor navigation](https://codesandbox.io/s/react-gamepad-with-cursor-analog-support-better-perf-forked-sxls0)
 
-## "Horse" game
+## ["Horse" game](https://codesandbox.io/s/react-gamepad-menu-w-controller-ui-hook-version-shenmue-horse-working-oioei)
 
 </Box>
 
 ---
 
+<Box maxHeight="90vh">
+  <video width="80%" height="auto" autoplay controls muted>
+    <source src="/2020-09-28 16-24-30 edited 2.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</Box>
+
+---
+
+<Box textAlign="left">
+
+## Controller Debug UI
+
+As simple as using the component:
+
+```js
+import { GameController } from 'react-gamepads'
+
+const App = () => {
+  return <GameController />
+}
+```
+
 <img
   src="/gamepad-input-example.gif"
   alt="GIF of the GamepadController component in an app, showing game input by highlighting buttons on pad"
 />
+
+</Box>
+
+---
+
+<Box textAlign="left">
+
+<Heading as="h1" variant="h1">
+  The <Highlight>importance</Highlight> of <br />
+  input options
+</Heading>
+
+</Box>
+
+<SpeakerNotes>
+
+Standard keyboards and mice can pose difficulties for many people – especially users with physical, sensory, or cognitive challenges – and there are lots of other options available.
+
+</SpeakerNotes>
+
+---
+
+<Quote author="Grant Stoner - Washington Post" fontSize="90px">
+  [The Last of Us] offered extensive features for players with disabilities,
+  including those with low vision and colorblindness.
+</Quote>
+
+---
+
+<Quote
+  author="Xbox on Accessibility"
+  url="https://www.xbox.com/en-US/xbox-one/accessibility"
+>
+  Nothing should come between you and the games you love.
+</Quote>
+
+<SpeakerNotes>
+
+This is the kind of thinking that should go behind accessibility movements, empowering a set of users to enjoy your product even more.
+
+</SpeakerNotes>
+
+---
+
+<Box textAlign="left">
+
+# References
+
+- [react-gamepads](https://github.com/whoisryosuke/react-gamepads)
+- [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
+- [For physically disabled gamers, the Switch is incredibly accessible](https://www.washingtonpost.com/video-games/2020/04/21/accessibility-gaming-nintendo-switch/)
+- [Keyboard and mouse alternatives and adaptations](https://abilitynet.org.uk/factsheets/keyboard-and-mouse-alternatives-and-adaptations)
+- [XBox Accessibility](https://www.xbox.com/en-US/xbox-one/accessibility)
+
+</Box>
 
 ---
 

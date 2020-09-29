@@ -1,8 +1,8 @@
 export const siteConfig = {
   title: `NextJS MDX Deck`,
-  date: `April 20/2020 Amsterdam`,
+  date: `September 29/2020 Los Angeles`,
   event: {
-    name: `JAMStack Conf 2020`,
+    name: `Twitch 2020`,
     url: '#',
   },
   author: {
