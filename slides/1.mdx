@@ -284,6 +284,12 @@ export default function App() {
 
 </Box>
 
+<SpeakerNotes>
+
+Note that this isn't "best practice" storing gamepad input into state (since it happens up to 60fps).
+
+</SpeakerNotes>
+
 ---
 
 <Text as="p" fontSize={6}>
@@ -315,6 +321,14 @@ useGamepads((gamepads) => {
 ```
 
 </Box>
+
+<SpeakerNotes>
+
+Note that each button on a gamepad is actually a `GamepadButton` class.
+
+It has the `pressed` boolean property which we use.
+
+</SpeakerNotes>
 
 ---
 
@@ -354,6 +368,18 @@ useGamepads((gamepads) => {
 ```
 
 </SpeakerNotes>
+
+---
+
+<Box textAlign="left">
+
+# Best practices
+
+- **Don't** store gamepad input into state.
+- **Debounce** input where possible, unless you need low latency interactions.
+- **Memoize and callback** all functions inside the "game loop"
+
+</Box>
 
 ---
 
