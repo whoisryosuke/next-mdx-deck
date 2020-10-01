@@ -28,7 +28,25 @@ Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).
 }
 ```
 
-3. Run `yarn dev` and to start the NextJS development server.
+3. Add a `deck.config.js` file to the root of your project:
+
+```js
+export const siteConfig = {
+  name: `@whoisryosuke`,
+  title: `NextJS MDX Deck`,
+  date: `April 22, 2020`,
+  author: {
+    url: `https://twitter.com/whoisryosuke`,
+  },
+  // Change the default redirect to a new slide
+  // Defaults to "deck" - should reflect your MDX filename
+  slideUrl: '',
+}
+
+export default siteConfig
+```
+
+4. Run `yarn dev` and to start the NextJS development server.
 
 > Looking for a sample MDX file? Use the [deck.mdx](./deck.mdx) file in this repo.
 

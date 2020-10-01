@@ -7,7 +7,11 @@ export default function index() {
 
   useEffect(() => {
     router.replace(
-      `/slides/${siteConfig.slideUrl ? siteConfig.slideUrl : 'deck'}`
+      `/slides/${
+        siteConfig.slideUrl && siteConfig.slideUrl !== ''
+          ? siteConfig.slideUrl
+          : 'deck'
+      }`
     )
   })
   return <div />
