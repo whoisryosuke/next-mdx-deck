@@ -7,7 +7,8 @@ import { TotalPagesContext } from '../../context/TotalPagesContext'
 import { siteConfig } from '../../deck.config.js'
 
 const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
-  const MDXContent = dynamic(() => import(`../../${filename}`))
+  console.log('the slide file', filename)
+  const MDXContent = dynamic(() => import(`${filename.substring(1)}`))
   return (
     <TotalPagesContext.Provider value={totalSlidePages}>
       <Head>
@@ -32,9 +33,8 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
 }
 
 export async function getStaticProps({ params }) {
-  const filename = path.join('slides', `${params.slide}.mdx`)
-  const slidesDirectory = path.join(process.cwd(), 'slides')
-  const mdxFiles = fs.readdirSync(slidesDirectory)
+  const filename = path.join(process.env.MDXPath, process.env.MDXSlideFile)
+  const mdxFiles = fs.readdirSync(process.env.MDXPath)
   const totalSlidePages = mdxFiles.length
 
   return {
@@ -47,8 +47,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const postsDirectory = path.join(process.cwd(), 'slides')
-  const mdxFiles = fs.readdirSync(postsDirectory)
+  const mdxFiles = fs.readdirSync(process.env.MDXPath)
   // Loop through all post files and create array of slugs (to create links)
   const paths = mdxFiles.map((filename) => ({
     params: {

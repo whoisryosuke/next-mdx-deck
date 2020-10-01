@@ -45,6 +45,10 @@ const filename = file || cmd
 // No file? Show the CLI help
 if (!filename) cli.showHelp(0)
 
+// Add file to Node ENV for NextJS to use
+process.env.MDXPath = process.cwd()
+process.env.MDXSlideFile = filename
+
 // Create spreadable object of flags passed (like port)
 const opts = { ...cli.flags }
 
@@ -67,33 +71,33 @@ const copyAssetsFolder = async () => {
  */
 const next = async (...args) => {
   // Get slides directory
-  const slidesDir = path.join(__dirname, '../slides')
+  // const slidesDir = path.join(__dirname, '../slides')
 
   // Take MDX file from input and copy it into slides directory
-  const mdxInputPath = `${process.cwd()}/${filename}`
-  const newMdxFilePath = `${slidesDir}/${filename}`
-  const mdxFileExists = await fs.pathExists(newMdxFilePath)
+  // const mdxInputPath = `${process.cwd()}/${filename}`
+  // const newMdxFilePath = `${slidesDir}/${filename}`
+  // const mdxFileExists = await fs.pathExists(newMdxFilePath)
 
-  if (mdxInputPath !== newMdxFilePath && mdxFileExists) {
-    // Delete old slides
-    await fs.emptyDirSync(slidesDir)
-    // Copy MDX file
-    await fs.copy(mdxInputPath, newMdxFilePath, (err) => {
-      if (err) return console.error(err)
-    })
-  }
+  // if (mdxInputPath !== newMdxFilePath && mdxFileExists) {
+  //   // Delete old slides
+  //   await fs.emptyDirSync(slidesDir)
+  //   // Copy MDX file
+  //   await fs.copy(mdxInputPath, newMdxFilePath, (err) => {
+  //     if (err) return console.error(err)
+  //   })
+  // }
 
-  const oldConfigPath = path.join(__dirname, '../deck.config.js')
-  const inputFilename = opts.config ? opts.config : 'deck.config.js'
-  const inputConfigPath = `${process.cwd()}/${inputFilename}`
-  const inputConfigExists = await fs.pathExists(inputConfigPath)
-  // Delete old config and copy
-  if (oldConfigPath !== inputConfigPath && inputConfigExists) {
-    await fs.remove(oldConfigPath)
-    await fs.copy(inputConfigPath, oldConfigPath, (err) => {
-      if (err) return console.error(err)
-    })
-  }
+  // const oldConfigPath = path.join(__dirname, '../deck.config.js')
+  // const inputFilename = opts.config ? opts.config : 'deck.config.js'
+  // const inputConfigPath = `${process.cwd()}/${inputFilename}`
+  // const inputConfigExists = await fs.pathExists(inputConfigPath)
+  // // Delete old config and copy
+  // if (oldConfigPath !== inputConfigPath && inputConfigExists) {
+  //   await fs.remove(oldConfigPath)
+  //   await fs.copy(inputConfigPath, oldConfigPath, (err) => {
+  //     if (err) return console.error(err)
+  //   })
+  // }
 
   // Copy contents of public folder (image assets and whatnot)
   // @TODO: Maybe pass Next CLI a flag for public dir?
