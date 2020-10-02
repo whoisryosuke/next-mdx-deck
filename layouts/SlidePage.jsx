@@ -398,7 +398,7 @@ export default function SlidePage({ children }) {
         notes={slideNotes()}
         currentSlide={currentSlide}
       >
-        <div id="slide" style={{ width: '100%' }}>
+        <div id="slide" style={{ width: '100%' }} aria-live="polite">
           {renderSlide()}
         </div>
       </PresentationMode>
