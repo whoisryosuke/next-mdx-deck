@@ -32,7 +32,7 @@ const SlideshowPage = ({ totalSlidePages, currentSlide, filename }) => {
 }
 
 export async function getStaticProps({ params }) {
-  const filename = path.join('slides', `${params.slide}.mdx`)
+  const filename = path.join('slides', `${params.slide.join('/')}.mdx`)
   const slidesDirectory = path.join(process.cwd(), 'slides')
   const mdxFiles = fs.readdirSync(slidesDirectory)
   const totalSlidePages = mdxFiles.length
@@ -47,15 +47,45 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
+  let paths = []
   const postsDirectory = path.join(process.cwd(), 'slides')
-  const mdxFiles = fs.readdirSync(postsDirectory)
-  // Loop through all post files and create array of slugs (to create links)
-  const paths = mdxFiles.map((filename) => ({
-    params: {
-      slide: filename.replace('.mdx', ''),
-    },
-  }))
 
+  // Add file to paths array
+  const addFile = (filename) => {
+    const slidePaths = filename.replace('.mdx', '').split('/')
+    paths = [
+      ...paths,
+      {
+        params: {
+          slide: slidePaths,
+        },
+      },
+    ]
+  }
+
+  // Loop through files and detect folder, if detected, run function again (recursive)
+  const scanFolder = (folderPath) => {
+    const files = fs.readdirSync(folderPath)
+    files.forEach((filename) => {
+      const directory = path.join(folderPath, filename)
+      // If it's a folder, recursively scan
+      if (fs.lstatSync(directory).isDirectory()) {
+        return scanFolder(directory)
+      }
+      // Append folder name is not slide root
+      const prependFolder = folderPath.replace(postsDirectory, '')
+      console.log('prepended folder', folderPath, postsDirectory, prependFolder)
+      if (prependFolder !== '') {
+        addFile(`${prependFolder.substring(1)}/${filename}`)
+      } else {
+        addFile(filename)
+      }
+    })
+  }
+
+  scanFolder(postsDirectory)
+
+  console.log(paths)
   return {
     paths,
     fallback: false,

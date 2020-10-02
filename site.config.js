@@ -5,6 +5,7 @@ export const siteConfig = {
   author: {
     url: `https://twitter.com/whoisryosuke`,
   },
+  slideUrl: 'nested/1',
 }
 
 export default siteConfig
