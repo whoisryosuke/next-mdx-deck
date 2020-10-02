@@ -74,7 +74,6 @@ export async function getStaticPaths() {
       }
       // Append folder name is not slide root
       const prependFolder = folderPath.replace(postsDirectory, '')
-      console.log('prepended folder', folderPath, postsDirectory, prependFolder)
       if (prependFolder !== '') {
         addFile(`${prependFolder.substring(1)}/${filename}`)
       } else {
@@ -85,7 +84,6 @@ export async function getStaticPaths() {
 
   scanFolder(postsDirectory)
 
-  console.log(paths)
   return {
     paths,
     fallback: false,
