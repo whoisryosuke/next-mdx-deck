@@ -10,6 +10,7 @@ export const siteConfig = {
     social: `@whoisryosuke`,
     url: `https://twitter.com/whoisryosuke`,
   },
+  slideUrl: 'nested/1',
 }
 
 export default siteConfig
