@@ -1,0 +1,61 @@
+<SlidePage>
+
+# Elevate authoring with components
+
+Using MDX you can use components alongside your Markdown, like React or Web Components.
+
+---
+
+<button
+  style={{
+    backgroundColor: "transparent",
+    color: "#FFF",
+    border: "3px solid #FFF",
+    borderRadius: "6px",
+    padding: "1.5em 2em",
+    fontSize: "1em",
+  }}
+>
+  Button with JSX
+</button>
+
+---
+
+## Source of the last slide
+
+```jsx
+<button
+  style={{
+    backgroundColor: "transparent",
+    color: "#FFF",
+    border: "3px solid #FFF",
+    borderRadius: "6px",
+    padding: "1.5em 2em",
+    fontSize: "1em",
+  }}
+>
+  Button with JSX
+</button>
+```
+
+---
+
+Use other components by adding to `<MDXProvider>`
+
+```jsx
+const mdComponents = {
+  h1: (props) => <Heading as="h1" {...props} />,
+};
+```
+
+[Check out the docs here](https://mdxjs.com/getting-started#mdxprovider)
+
+---
+
+## Having issues?
+
+- **Check your syntax.** _JSX doesn't like things like unclosed tags._
+- **Clear the cache and restart the server.** _MDX is like that sometimes._
+- **Check the MDX docs**. _It's next level stuff._
+
+</SlidePage>
