@@ -19,7 +19,7 @@ Create presentation decks using MDX, React, and [Next.js](https://nextjs.org/).
 1. Clone the project: `git clone https://github.com/whoisryosuke/next-mdx-deck`
 2. Install dependencies: `npm i` or `yarn`
 3. Run the dev server: `npm run dev` or `yarn dev`
-4. Edit the first slide in `/slides/1.mdx` and save to [**see changes**](http://localhost:3000/)!
+4. Edit the first slide in `/pages/index.mdx` and save to [**see changes**](http://localhost:3000/)!
 
 When you're done, run `npm run build && npm run export` or `yarn build && yarn export` will create a static app you can deploy anywhere (or use locally). See below for more details.
 
@@ -27,14 +27,14 @@ When you're done, run `npm run build && npm run export` or `yarn build && yarn e
 
 This project is easy to build locally or using a host with build services (like Netlify or Now).
 
-1. ⚙️ Run the build process: `npm run build && npm run export`
+1. ⚙️ Run the build process: `yarn export`
 1. 🚀 Upload the static contents of `out` folder to host/CDN (or run the `out/index.html` locally)
 
 ## How to Use
 
 ### 💬 Changing the Title/Date/etc
 
-The default theme includes a title, date, author (and link to the author's website) in of the `<Header>` component. You can edit this data inside the `site.config.js` file. 
+The default theme includes a title, date, author (and link to the author's website) in of the `<Header>` component. You can edit this data inside the `site.config.js` file.
 
 ### ✍️ Writing JSX
 
@@ -49,13 +49,22 @@ You can use JSX in [a few ways](https://mdxjs.com/getting-started) in your MDX f
 
 ### 📃 Creating Slide Pages
 
-Slide pages are incremental, starting at 1. If you need a new page, create a new MDX file that is named one number higher than the last page (e.g. `3.mdx` if there's 2 pages).
+You can create new slide pages by making new `.mdx` files inside the `/pages/` directory. Each slide is separated by a markdown divider (`---`).
 
-> Pages must be integers and incremental, but you can change the starting slide by editing the redirect in `/pages/index.jsx` (e.g. `router.replace('/slides/420')`)
+> **You have to wrap the contents of each `.mdx` file with a `<SlidePage>` component.** This is what breaks up each slide page into individual slides using the markdown dividers.
+
+### 🗺 Navigation
+
+Slide pages represent real pages - so `page-2.mdx` == `your-site.com/page-2`. By using the `next` prop on the `<SlidePage>` component you can control the next page you navigate to (after you go through all the slides).
+
+```js
+// Navigates to your-site.com/your-custom-page after all slides complete
+<SlidePage next="your-custom-page">
+```
 
 ### 🎨 Theming the Slideshow
 
-Theming is accomplished with **CSS custom properties** and/or **Styled Components**. 
+Theming is accomplished with **CSS custom properties** and/or **Styled Components**.
 
 Design tokens are stored as CSS custom properties inside the SlidePage layout (`/layouts/SlidePage.jsx`), which are injected into the app using Styled Component's global styling utility. There you can change the color of text, background colors, fonts, etc.
 
@@ -86,9 +95,9 @@ This way you can view your presentation on one monitor, while displaying the sli
 
 Speaker notes are only displayed during presentation mode. This allows you to write private notes to yourself that you can see in "presentation" mode, while the audience only sees the other slide content in "slideshow" mode.
 
-Speaker notes can contain **Markdown**, **MDX/JSX**, and even **HTML** *(as JSX)*. The notes are displayed in a scrollable window to the side of slide content during "presenation" mode.
+Speaker notes can contain **Markdown**, **MDX/JSX**, and even **HTML** _(as JSX)_. The notes are displayed in a scrollable window to the side of slide content during "presenation" mode.
 
-To create speaker notes, you use the `<SpeakerNotes>` component inside of your MDX files. No need to import it, it's [automatically imported into any MDX slide page](components/MDXProvider.jsx). You can also use it multiple times within the same slide, all the notes (per slide) will be combined. 
+To create speaker notes, you use the `<SpeakerNotes>` component inside of your MDX files. No need to import it, it's [automatically imported into any MDX slide page](components/MDXProvider.jsx). You can also use it multiple times within the same slide, all the notes (per slide) will be combined.
 
 Here's an example:
 
@@ -97,7 +106,7 @@ Slide content would go here.
 
 <SpeakerNotes>
     
-Private notes here. 
+Private notes here.
 
 # Even Markdown!
 
@@ -106,7 +115,7 @@ Private notes here.
 
 ### Adding/replacing components in MDX
 
-MDX allows you to use JSX inline or import components, but if you want to use a React component across all slides without importing it, you can use the `<MDXProvider>` component. This component wraps the app in a "context" that provides MDX with components to pass into the parser. 
+MDX allows you to use JSX inline or import components, but if you want to use a React component across all slides without importing it, you can use the `<MDXProvider>` component. This component wraps the app in a "context" that provides MDX with components to pass into the parser.
 
 This also lets you replace Markdown parsed HTML elements with React components, like replacing `## Headings` with `<Heading as="h2">` instead of the default `<h2>`. This comes in handy if you have a React component library and you want to use it's primitives like `<Text>` for paragraphs.
 
@@ -116,7 +125,79 @@ You can pass new components, or swap HTML elements inside the `mdComponents` obj
 const mdComponents = {
   h1: (props) => <h1 {...props} />,
   CustomButton,
-}
+};
+```
+
+## Available Components
+
+### Framer Motion
+
+You can use any Framer Motion component:
+
+```mdx
+<motion.div 
+  animate={{scale: 2}}
+  transition={{ duration: 0.5 }}
+>
+
+# Your animated header
+
+</motion.div>
+```
+
+### Cover
+
+Displays content centered and larger, commonly for the first slide in a deck.
+
+```mdx
+<Cover>
+
+# NextJS MDX Deck
+
+Create presentations using Next & React & MDX.
+
+</Cover>
+```
+
+### Steps
+
+![Steps component](./screenshots/next-mdx-deck-step-component.gif)
+
+Reveals content step by step as the user does next/prev slide button.
+
+```mdx
+<Steps>
+  <Step>Something</Step>
+  <Step>happens</Step>
+  <Step>one</Step>
+  <Step>by</Step>
+  <Step>one</Step>
+  <Step>easy to add stuff</Step>
+</Steps>
+```
+
+**Custom order**
+
+You can also define the order explicitly:
+
+```mdx
+<Steps>
+  <Step order={3}>Third</Step>
+  <Step order={2}>Second</Step>
+  <Step order={1}>First</Step>
+</Steps>
+```
+
+**Duration**
+
+You can control the animation duration using the prop and providing an integer (representing seconds):
+
+```mdx
+<Steps>
+  {/** 3 seconds **/}
+  <Step duration={3}>Something</Step>
+  <Step>happens</Step>
+</Steps>
 ```
 
 ## Learn More
