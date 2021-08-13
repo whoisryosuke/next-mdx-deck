@@ -23,5 +23,8 @@
     "@types/react": "^17.0.16",
     "babel-plugin-styled-components": "^1.12.0",
     "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": ">=12"
   }
 }
