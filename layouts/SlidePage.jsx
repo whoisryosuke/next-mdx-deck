@@ -214,7 +214,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function SlidePage({ children, next }) {
-  const { currentSlide, setSlide } = useCurrentSlide();
+  const {
+    currentSlide,
+    setSlide,
+    steps,
+    currentStep,
+    setCurrentStep,
+    clearSteps,
+  } = useCurrentSlide();
   const router = useRouter();
   const totalPages = useTotalPages();
   const { mode, setMode } = useMode();
@@ -267,10 +274,21 @@ export default function SlidePage({ children, next }) {
 
     // Handle slide changes
     if (NEXT.indexOf(keyCode) !== -1) {
+      // Do we have Steps inside the slide? Navigate those first
+      if (steps.length > 0 && currentStep < steps.length - 1)
+        return setCurrentStep((prevStep) => prevStep + 1);
+
+      // Otherwise go to next slide
       setSlide((prevState) => {
         return prevState + 1;
       });
+      clearSteps();
     } else if (keyCode === PREV) {
+      // Do we have Steps inside the slide? Navigate those first
+      if (steps.length > 0 && currentStep !== 0)
+        return setCurrentStep((prevStep) => prevStep - 1);
+
+      // Otherwise go to prev slide
       setSlide((prevState) => {
         // router.push(
         //   `${router.pathname}`,
@@ -278,6 +296,7 @@ export default function SlidePage({ children, next }) {
         // );
         return prevState - 1;
       });
+      clearSteps();
     }
   };
 
