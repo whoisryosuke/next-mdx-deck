@@ -7,6 +7,7 @@ import Cover from "./Cover";
 import SpeakerNotes from "./SpeakerNotes";
 import Step from "./Step";
 import Steps from "./Steps";
+import { motion } from "framer-motion";
 
 const mdComponents = {
   h1: (props) => <h1 {...props} />,
@@ -28,6 +29,7 @@ const mdComponents = {
   SpeakerNotes,
   Step,
   Steps,
+  motion,
 };
 
 export default ({ children }) => (
