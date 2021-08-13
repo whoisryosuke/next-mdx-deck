@@ -127,6 +127,76 @@ const mdComponents = {
 };
 ```
 
+## Available Components
+
+### Framer Motion
+
+You can use any Framer Motion component:
+
+```mdx
+<motion.div 
+  animate={{scale: 2}}
+  transition={{ duration: 0.5 }}
+>
+
+# Your animated header
+
+</motion.div>
+```
+
+### Cover
+
+Displays content centered and larger, commonly for the first slide in a deck.
+
+```mdx
+<Cover>
+
+# NextJS MDX Deck
+
+Create presentations using Next & React & MDX.
+
+</Cover>
+```
+
+### Steps
+
+Reveals content step by step as the user does next/prev slide button.
+
+```mdx
+<Steps>
+  <Step>Something</Step>
+  <Step>happens</Step>
+  <Step>one</Step>
+  <Step>by</Step>
+  <Step>one</Step>
+  <Step>easy to add stuff</Step>
+</Steps>
+```
+
+**Custom order**
+
+You can also define the order explicitly:
+
+```mdx
+<Steps>
+  <Step order={3}>Third</Step>
+  <Step order={2}>Second</Step>
+  <Step order={1}>First</Step>
+</Steps>
+```
+
+**Duration**
+
+You can control the animation duration using the prop and providing an integer (representing seconds):
+
+```mdx
+<Steps>
+  {/** 3 seconds **/}
+  <Step duration={3}>Something</Step>
+  <Step>happens</Step>
+</Steps>
+```
+
 ## Learn More
 
 ### MDX
