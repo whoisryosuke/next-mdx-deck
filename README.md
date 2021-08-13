@@ -58,6 +58,7 @@ You can create new slide pages by making new `.mdx` files inside the `/pages/` d
 Slide pages represent real pages - so `page-2.mdx` == `your-site.com/page-2`. By using the `next` prop on the `<SlidePage>` component you can control the next page you navigate to (after you go through all the slides).
 
 ```js
+// Navigates to your-site.com/your-custom-page after all slides complete
 <SlidePage next="your-custom-page">
 ```
 
