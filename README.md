@@ -161,6 +161,8 @@ Create presentations using Next & React & MDX.
 
 ### Steps
 
+![Steps component](./screenshots/next-mdx-deck-step-component.gif)
+
 Reveals content step by step as the user does next/prev slide button.
 
 ```mdx
