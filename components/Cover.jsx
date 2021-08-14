@@ -1,8 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
-
-const StyledCover = styled.div``
+import React from "react";
 
 export default function Cover({ children }) {
-  return <StyledCover>{children}</StyledCover>
+  return <div>{children}</div>;
 }

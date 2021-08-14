@@ -1,12 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
-import { MODES } from '../constants/modes'
+import React from "react";
+import styled from "@emotion/styled";
+import { MODES } from "../constants/modes";
 
 const PresentationFrame = styled.div`
   display: flex;
   padding: 3rem;
   max-height: 100vh;
-`
+`;
 
 const SlideWindow = styled.div`
   width: 65%;
@@ -19,10 +19,10 @@ const SlideWindow = styled.div`
 
   #slide {
     border: 1px solid #fff;
-    align-items:flex-start;
-    height:auto;
+    align-items: flex-start;
+    height: auto;
   }
-`
+`;
 
 const Sidebar = styled.div`
   width: 35%;
@@ -30,7 +30,7 @@ const Sidebar = styled.div`
   & > div {
     padding: 1rem;
   }
-`
+`;
 
 const SpeakerNotesWindow = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ const SpeakerNotesWindow = styled.div`
   & > div {
     padding: 1rem;
   }
-`
+`;
 
 export default function PresentationMode({
   mode,
@@ -66,7 +66,7 @@ export default function PresentationMode({
           </div>
         </Sidebar>
       </PresentationFrame>
-    )
+    );
   }
-  return children
+  return children;
 }

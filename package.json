@@ -9,19 +9,20 @@
     "export": "next build && next export"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.6",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@mdx-js/loader": "^1.6.22",
     "@next/mdx": "^11.0.1",
-    "framer-motion": "^4.1.17",
+    "framer-motion": "^4",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-swipeable": "^6.1.2",
-    "react-syntax-highlighter": "^15.4.4",
-    "styled-components": "^5.2.3"
+    "react-syntax-highlighter": "^15.4.4"
   },
   "devDependencies": {
     "@types/react": "^17.0.16",
-    "babel-plugin-styled-components": "^1.12.0",
     "typescript": "^4.3.5"
   },
   "engines": {
