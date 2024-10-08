@@ -18,6 +18,7 @@
     "react-dom": "18.3.1",
     "react-swipeable": "^6.1.2",
     "react-syntax-highlighter": "^15.4.4",
+    "rehype-highlight": "^7.0.0",
     "styled-components": "^5.2.3"
   },
   "devDependencies": {

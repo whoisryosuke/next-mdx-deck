@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 
 const mdComponents = {
   h1: (props) => <h1 {...props} />,
-  pre: (props) => props.children,
+  //   pre: (props) => props.children,
   //   code: (props) => {
   //     const { className } = props;
   //     const language = className ? className.replace("language-", "") : "text";
