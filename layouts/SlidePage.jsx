@@ -345,15 +345,22 @@ export default function SlidePage({ children, next }) {
 
     // Filter down children by only Slides
     React.Children.map(children, (child) => {
+      console.log("child", child);
+      // We grab the "name" of the component using the `type` property
+      let childType = child && child.type;
+      // React components show as functions, so we grab their name from the `name` property React components usually have
+      if (typeof child.type !== "string" && "name" in child.type) {
+        childType = child.type.name;
+      }
+
       // Check for <hr> element to separate slides
-      const childType = child && child.props && (child.props.mdxType || []);
-      if (childType && childType.includes("hr")) {
+      if (childType && childType == "hr") {
         generatorCount += 1;
         return;
       }
 
-      // Check if it's a SpeakerNotes component
-      if (childType && !childType.includes("SpeakerNotes")) {
+      // Check if it's a SpeakerNotes component and skip them
+      if (childType && childType != "SpeakerNotes") {
         // Add slide content to current generated slide
         if (!Array.isArray(generatedSlides[generatorCount])) {
           generatedSlides[generatorCount] = [];
@@ -374,6 +381,12 @@ export default function SlidePage({ children, next }) {
       );
       setSlide(slideCount);
     }
+    console.log(
+      "current slide",
+      generatedSlides,
+      currentSlide,
+      generatedSlides[currentSlide]
+    );
     return <Slide>{generatedSlides[currentSlide]}</Slide>;
   };
 

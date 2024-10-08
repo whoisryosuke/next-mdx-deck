@@ -1,5 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
+import React from "react";
+import Link from "next/link";
 
 export default function Header({ name, title, date, url }) {
   return (
@@ -7,13 +7,10 @@ export default function Header({ name, title, date, url }) {
       <div>
         <a href={url}>
           <span>{name}</span>
-        </a>{' '}
-        —{' '}
-        <Link href="/1">
-          <a>{title}</a>
-        </Link>
+        </a>{" "}
+        — <Link href="/1">{title}</Link>
       </div>
       <time>{date}</time>
     </header>
-  )
+  );
 }
