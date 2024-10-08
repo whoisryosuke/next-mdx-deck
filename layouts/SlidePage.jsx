@@ -60,12 +60,13 @@ export default function SlidePage({ children, next }) {
         }
         const currentPathIndex = parseInt(currentPath, 10);
         if (currentPathIndex > 2) {
-          router.push(`${currentPathIndex - 1}?mode=${mode}#0`);
+          setSlide(999);
+          router.push(`${currentPathIndex - 1}?mode=${mode}`);
         }
         console.log("PREV PAGE", router.pathname, currentPathIndex);
-        if (currentPathIndex <= 2) {
-          console.log("PREV PAGE INDEX");
-          router.push(`/?mode=${mode}#999`);
+        if (currentPathIndex <= 2 && currentPathIndex > 1) {
+          setSlide(999);
+          router.push(`/?mode=${mode}`);
         }
       }
       return false;
@@ -191,12 +192,7 @@ export default function SlidePage({ children, next }) {
 
     // Return current slide
     if (currentSlide === 999) {
-      router.push(
-        router.pathname,
-        `${router.pathname}?mode=${mode}#${slideCount}`,
-        { shallow: true }
-      );
-      setSlide(slideCount);
+      setSlide(slideCount + 1);
     }
     return <Slide>{generatedSlides[currentSlide]}</Slide>;
   };
